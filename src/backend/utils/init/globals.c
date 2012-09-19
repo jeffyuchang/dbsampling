@@ -126,5 +126,5 @@ int			GinFuzzySearchLimit = 0;
  */
 object_access_hook_type object_access_hook = NULL;
 
-int Sample_rate=100
+int Sample_rate=100;
 char* Sample_type= NULL;
