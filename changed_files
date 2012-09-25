@@ -6,4 +6,4 @@ src/backend/executor/nodeSeqscan.c
 src/include/nodes/execnodes.h
 src/include/access/heapam.h
 src/include/miscadmin.h
-src/include/postmaster/nodeSeqscan.h
+src/include/executor/nodeSeqscan.h
