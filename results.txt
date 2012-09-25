@@ -1,0 +1,65 @@
+This is the report that summaries the various experiments with database sampling.
+
+We have two relations in the database, they are R and S , each of the relation has more than thousands tuples.
+
+The following aggregation SQLs are tested in this report.
+    Q1: SELECT COUNT(*) FROM R;
+    Q2: SELECT COUNT(*) FROM S;
+    Q3: SELECT AVG(s.a), COUNT(*) from R r, S s where r.x = s.c;
+
+1. 5000 tuples in R, 12457 tuples in S
+
+1) no sampling:
+    The result of Q1:   5000 tuples, 57 pages.
+    The result of Q2:   12457 tuples, 146 pages.
+    The result of Q3:    average value = 50259.11,12457 tuples. 146 pages from S, 57 pages from R.
+
+2) sample_type='p' and sample_rate=10:
+    The result of Q1:     539 tuples, 6 pages.
+    The result of Q2:     1288 tuples, 15 pages.
+    The result of Q3:      average value = 49605.50, 1286 tuples, 6 pages from R, 15 pages from S.
+
+3) sample_type='p' and sample_rate = 20:
+    The result of Q1:      1077 tuples, 12 pages.
+    The result of Q2:       2566 tuples, 30 pages.
+    The result of Q3:       average value = 50056.00, 2563 tuples, 12 pages from R, 30 pages from S.
+
+4) sample_type='t' and sample_rate=10:
+    The result of Q1:      500 tuples, 57 pages.
+    The result of Q2:      1245 tuples, 146 pages.
+    The result of Q3:      average value = 47391.34, 85 tuples, 57 pages from R, 146 pages from S. 
+
+5) sample_type='t' and sample_rate=50:
+    The result of Q1:      1500 tuples, 57 pages.
+    The result of Q2:      3737 tuples, 146 pages.
+    The result of Q3:      average value = 47391.34, 85 tuples, 57 pages from R, 146 pages from S. 
+
+
+2. 20000 tuples in R,  50062 tuples in S
+
+1) no sampling:
+    The result of Q1:   20000 tuples, 224 pages.
+    The result of Q2:   50062 tuples, 587 pages.
+    The result of Q3:    average value = 50057.26, 50062 tuples. 146 pages from S, 57 pages from R.
+
+2) sample_type='p' and sample_rate=10:
+    The result of Q1:     2050 tuples, 23 pages.
+    The result of Q2:     5061 tuples, 59 pages.
+    The result of Q3:     average value = 50294.45, 5035 tuples, 23 pages from R, 59 pages from S.
+
+3) sample_type='p' and sample_rate = 20:
+    The result of Q1:      4031 tuples, 45 pages.
+    The result of Q2:       10114 tuples, 118 pages.
+    The result of Q3:      average value = 50217.95,  9962tuples, 45 pages from R, 118 pages from S.
+
+4) sample_type='t' and sample_rate=10:
+    The result of Q1:      2000 tuples, 224 pages.
+    The result of Q2:      5006 tuples, 587 pages.
+    The result of Q3:      average value = 47391.34, 85 tuples, 224 pages from R, 587 pages from S. 
+
+5) sample_type='t' and sample_rate=50:
+    The result of Q1:      10000 tuples, 224 pages.
+    The result of Q2:       25031 tuples, 587 pages.
+    The result of Q3:      average value = 47391.34, 85 tuples, 224 pages from R, 587 pages from S. 
+      
+
