@@ -593,9 +593,8 @@ heapgettup(HeapScanDesc scan,
  * heapgettup is 1-based.
  * ----------------
  */
-static int enable_sampling=0,sampling_rate=0;
+static int sampling_rate=0;
 static char sampling_type=0;
-static int tot_tuples=0;
 
 void SetSamplingStrategy(char type,int rate)
 {
@@ -603,7 +602,6 @@ void SetSamplingStrategy(char type,int rate)
 	elog(LOG,"type:%c rate:%d",type,rate);
 	sampling_rate=rate;
 	sampling_type=type;
-	enable_sampling=1;
 }
 
 
@@ -623,7 +621,7 @@ heapgettup_pagemode(HeapScanDesc scan,
 	OffsetNumber lineoff;
 	int			linesleft;
 	ItemId		lpp;
-	int			i,total_tuples=0,max_blocks,sampling_tuples;
+	int			max_blocks,sampling_tuples;
 	/*
 	 * calculate next starting lineindex, given scan direction
 	 */
@@ -643,31 +641,15 @@ heapgettup_pagemode(HeapScanDesc scan,
 //#added
 			page = scan->rs_startblock; /* first page */
 			max_blocks=scan->rs_nblocks;
-			total_tuples=0;
-	
-			if(sampling_type=='t')
-			{
-				for(i=0;i<max_blocks;i++)
-				{
-					heapgetpage(scan, i);
-					elog(LOG,"page[%d] tuples[%d]",scan->rs_cblock,scan->rs_ntuples);						
-					total_tuples+=scan->rs_ntuples;
-				}
-				sampling_tuples=  (float)total_tuples*(sampling_rate/100.0);
-				elog(LOG,"total_tuples:%d sampling_rate=%d",total_tuples, sampling_tuples);
-				tot_tuples=sampling_tuples;			
-			}
-
+			
 			heapgetpage(scan, page);
             elog(LOG,"JEFF YU page[%d] tuples[%d]",scan->rs_cblock,scan->rs_ntuples); 
 
 			if(sampling_type=='t')
 			{
-				elog(LOG,"tot_tupls:%d rs_ntuples:%d",tot_tuples,scan->rs_ntuples);
-				if((tot_tuples-scan->rs_ntuples)<0)
-					scan->rs_ntuples=tot_tuples;
-				tot_tuples-=scan->rs_ntuples;
-				elog(LOG,"tot_tupels:%d ntuples:%d",tot_tuples,scan->rs_ntuples);
+				sampling_tuples=scan->rs_ntuples*(sampling_rate/100.0);
+				elog(LOG,"real tuples:%d sampling_tuples:%d",scan->rs_ntuples,sampling_tuples);
+				scan->rs_ntuples=sampling_tuples;
 			}
 
 			lineindex = 0;
@@ -866,14 +848,11 @@ heapgettup_pagemode(HeapScanDesc scan,
 		heapgetpage(scan, page);
 		elog(LOG,"page:%d tuples:%d",page,scan->rs_ntuples);
 		if(sampling_type=='t')
-			{
-				elog(LOG,"tot_tupls:%d rs_ntuples:%d",tot_tuples,scan->rs_ntuples);
-				if((tot_tuples-scan->rs_ntuples)<0)
-					scan->rs_ntuples=tot_tuples;
-				tot_tuples-=scan->rs_ntuples;
-				elog(LOG,"tot_tupels:%d ntuples:%d",tot_tuples,scan->rs_ntuples);
-			}
-
+		{
+				sampling_tuples=scan->rs_ntuples*(sampling_rate/100.0);
+				elog(LOG,"real tuples:%d sampling_tuples:%d",scan->rs_ntuples,sampling_tuples);
+				scan->rs_ntuples=sampling_tuples;
+		}
 		dp = (Page) BufferGetPage(scan->rs_cbuf);
 		lines = scan->rs_ntuples;
 		linesleft = lines;
