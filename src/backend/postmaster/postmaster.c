@@ -2444,6 +2444,7 @@ reaper(SIGNAL_ARGS)
 			/* at this point we are really open for business */
 			ereport(LOG,
 				 (errmsg("database system is ready to accept connections")));
+            //show sample_type and sample_rate
 			ereport(LOG,
 				(errmsg("Sample_type='%s'\tSample_rate=%d",Sample_type,Sample_rate)));
 			continue;
