@@ -1441,6 +1441,16 @@ static struct config_bool ConfigureNamesBool[] =
 
 static struct config_int ConfigureNamesInt[] =
 {
+ 	{
+                {"sample_rate", PGC_USERSET, QUERY_TUNING_OTHER,
+                        gettext_noop("Sets the default sampling rate."),
+                        gettext_noop("This applies to percentage of objects "
+                                " tuples or pages) to be considered.")
+                },
+                &Sample_rate,
+                100, 1, 100,
+                NULL, NULL, NULL
+        },
 	{
 		{"archive_timeout", PGC_SIGHUP, WAL_ARCHIVING,
 			gettext_noop("Forces a switch to the next xlog file if a "
@@ -1587,16 +1597,6 @@ static struct config_int ConfigureNamesInt[] =
 		100, 1, MAX_BACKENDS,
 		check_maxconnections, assign_maxconnections, NULL
 	},
-
-    {
-        {"sample_rate", PGC_USERSET, QUERY_TUNING_OTHER,
-            gettext_noop("Sets the default sampling rate."),
-            gettext_noop("This applies to the percentage of tuples or pages to be considered")
-        },
-        &Sample_rate,
-        0, 0, 100,
-        NULL, NULL, NULL 
-    },
 
 	{
 		{"superuser_reserved_connections", PGC_POSTMASTER, CONN_AUTH_SETTINGS,
@@ -2524,6 +2524,15 @@ static struct config_real ConfigureNamesReal[] =
 
 static struct config_string ConfigureNamesString[] =
 {
+    {
+                {"sample_type", PGC_USERSET, QUERY_TUNING_OTHER,
+                        gettext_noop("Sets default type of sampling: 't'= tuple-based, 'p' = page-based."),
+                        gettext_noop("If blank, no prefix is used.")
+                },
+                &Sample_type,
+                "p",
+                NULL, NULL, NULL
+        },
 	{
 		{"archive_command", PGC_SIGHUP, WAL_ARCHIVING,
 			gettext_noop("Sets the shell command that will be called to archive a WAL file."),
@@ -2544,16 +2553,6 @@ static struct config_string ConfigureNamesString[] =
 		"SQL_ASCII",
 		check_client_encoding, assign_client_encoding, NULL
 	},
-
-    {
-        {"sample_type", PGC_USERSET, QUERY_TUNING_OTHER,
-            gettext_noop("Set the default type of sample: 't' = tuple-based, 'p' = page-based."),
-            NULL
-        },
-        &Sample_type,
-        "",
-        NULL, NULL, NULL
-    },
 
 	{
 		{"log_line_prefix", PGC_SIGHUP, LOGGING_WHAT,

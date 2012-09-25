@@ -213,6 +213,9 @@ ExecInitSeqScan(SeqScan *node, EState *estate, int eflags)
     elog(LOG, "the total page (after sampling) is: %d", scanstate->ss_currentScanDesc->rs_nblocks);
     
 	scanstate->ps.ps_TupFromTlist = false;
+    if (scanstate->sample_type == 't') {
+        SetSamplingStrategy(scanstate->sample_type, scanstate->sample_rate); 
+    }
 
 	/*
 	 * Initialize result tuple type and projection info.

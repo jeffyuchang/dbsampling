@@ -94,7 +94,9 @@ int			DateOrder = DATEORDER_MDY;
 int			IntervalStyle = INTSTYLE_POSTGRES;
 bool		HasCTZSet = false;
 int			CTimeZone = 0;
-
+//#added
+char		*Sample_type=NULL;
+int			Sample_rate=100;
 bool		enableFsync = true;
 bool		allowSystemTableMods = false;
 int			work_mem = 1024;
@@ -125,6 +127,3 @@ int			GinFuzzySearchLimit = 0;
  * and logging plugins.
  */
 object_access_hook_type object_access_hook = NULL;
-
-int Sample_rate=100;
-char* Sample_type= NULL;

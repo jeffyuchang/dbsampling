@@ -1,5 +1,9 @@
 src/backend/utils/init/global.c
 src/backend/utils/misc/guc.c
-src/include/nodes/execnodes.h
-src/include/miscadmin.h
+src/backend/access/heap/heapam.c
+src/backend/postmaster/postmaster.c
 src/backend/executor/nodeSeqscan.c
+src/include/nodes/execnodes.h
+src/include/access/heapam.h
+src/include/miscadmin.h
+src/include/postmaster/nodeSeqscan.h

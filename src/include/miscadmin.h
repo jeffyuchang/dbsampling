@@ -75,6 +75,11 @@ extern volatile bool ImmediateInterruptOK;
 extern PGDLLIMPORT volatile uint32 InterruptHoldoffCount;
 extern PGDLLIMPORT volatile uint32 CritSectionCount;
 
+//#added
+extern int Sample_rate;
+extern char *Sample_type;
+//
+
 /* in tcop/postgres.c */
 extern void ProcessInterrupts(void);
 
@@ -121,10 +126,6 @@ do { \
 /*
  * from utils/init/globals.c
  */
-
-extern int Sample_rate;
-extern char *Sample_type;
-
 extern pid_t PostmasterPid;
 extern bool IsPostmasterEnvironment;
 extern PGDLLIMPORT bool IsUnderPostmaster;
