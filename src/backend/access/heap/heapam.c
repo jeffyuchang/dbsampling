@@ -598,8 +598,6 @@ static char sampling_type=0;
 
 void SetSamplingStrategy(char type,int rate)
 {
-	elog(LOG,"SetSamplingStrategy");
-	elog(LOG,"type:%c rate:%d",type,rate);
 	sampling_rate=rate;
 	sampling_type=type;
 }
@@ -643,12 +641,10 @@ heapgettup_pagemode(HeapScanDesc scan,
 			max_blocks=scan->rs_nblocks;
 			
 			heapgetpage(scan, page);
-            elog(LOG,"page:%d tuples:%d",scan->rs_cblock,scan->rs_ntuples); 
-
+   
 			if(sampling_type=='t')
 			{
 				sampling_tuples=scan->rs_ntuples*(sampling_rate/100.0);
-				elog(LOG,"real tuples:%d sampling_tuples:%d",scan->rs_ntuples,sampling_tuples);
 				scan->rs_ntuples=sampling_tuples;
 			}
 
@@ -846,11 +842,9 @@ heapgettup_pagemode(HeapScanDesc scan,
 		}
 
 		heapgetpage(scan, page);
-		elog(LOG,"page:%d tuples:%d",page,scan->rs_ntuples);
 		if(sampling_type=='t')
 		{
 				sampling_tuples=scan->rs_ntuples*(sampling_rate/100.0);
-				elog(LOG,"real tuples:%d sampling_tuples:%d",scan->rs_ntuples,sampling_tuples);
 				scan->rs_ntuples=sampling_tuples;
 		}
 		dp = (Page) BufferGetPage(scan->rs_cbuf);

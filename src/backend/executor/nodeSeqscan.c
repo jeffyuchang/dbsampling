@@ -203,15 +203,13 @@ ExecInitSeqScan(SeqScan *node, EState *estate, int eflags)
 	 */
 	InitScanRelation(scanstate, estate);
     
-    elog(LOG, "the total page is: %d", scanstate->ss_currentScanDesc->rs_nblocks);
-
+  
     //if the sample_type='p', only load the sample_rate * total_page pages.
     if (scanstate->sample_type == 'p') {
         scanstate->ss_currentScanDesc->rs_nblocks =
             (int)ceil(scanstate->ss_currentScanDesc->rs_nblocks * scanstate->sample_rate/100.0);
     }
-    elog(LOG, "the total page (after sampling) is: %d", scanstate->ss_currentScanDesc->rs_nblocks);
-    
+      
 	scanstate->ps.ps_TupFromTlist = false;
     if (scanstate->sample_type == 't') {
         SetSamplingStrategy(scanstate->sample_type, scanstate->sample_rate); 
