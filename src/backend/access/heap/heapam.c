@@ -643,7 +643,7 @@ heapgettup_pagemode(HeapScanDesc scan,
 			max_blocks=scan->rs_nblocks;
 			
 			heapgetpage(scan, page);
-            elog(LOG,"JEFF YU page[%d] tuples[%d]",scan->rs_cblock,scan->rs_ntuples); 
+            elog(LOG,"page:%d tuples:%d",scan->rs_cblock,scan->rs_ntuples); 
 
 			if(sampling_type=='t')
 			{
