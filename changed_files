@@ -1,4 +1,4 @@
-src/backend/utils/init/global.c
+src/backend/utils/init/globals.c
 src/backend/utils/misc/guc.c
 src/backend/access/heap/heapam.c
 src/backend/postmaster/postmaster.c
